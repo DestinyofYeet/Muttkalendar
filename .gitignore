@@ -1,0 +1,12 @@
+build/
+vgcore.*
+autom4te.cache/
+.deps/
+aclocal.m4
+configure~
+configure
+Makefile.in
+build-aux/
+test/
+the_problem_with_iconv.txt
+result
