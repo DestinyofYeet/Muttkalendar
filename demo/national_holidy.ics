@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+PRODID:-//Simple Mobile Tools//NONSGML Event Calendar//EN
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:Fronleichnam
+UID:Caldav-4-640
+X-SMT-CATEGORY-COLOR:-4831587
+CATEGORIES:Holidays in Germany
+LAST-MODIFIED:20240513T163858Z
+TRANSP:OPAQUE
+LOCATION:Rofl
+DTSTART;VALUE=DATE:20240530
+DTEND;VALUE=DATE:20240531
+X-SMT-MISSING-YEAR:0
+DTSTAMP:20240513T163902Z
+STATUS:CONFIRMED
+DESCRIPTION:Christlicher Feiertag. Nur in Baden-Württemberg, Bayern, Hessen, Nordrhein-
+	Westfalen,\nRheinland-Pfalz, Saarland, Sachsen (teilweise) und Thüringen (t
+	eilweise).
+END:VEVENT
+END:VCALENDAR

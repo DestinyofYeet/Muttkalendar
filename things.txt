@@ -1,0 +1,35 @@
+gcc main.c -ggdb3 -o main
+valgrind --track-orgings=yes
+cgdb / gdb
+argp
+
+command -- argumente
+"--" sagt aus, dass jetzt die optionen aufhören
+
+RFC-Page für ics dateien anschauen
+
+1. Parsen für email client
+2. Irgendwie abspeichern und dann ausspucken können welche events heute sind
+
+https://www.rfc-editor.org/rfc/rfc5545
+https://www.gnu.org/software/libc/manual/html_node/Argp.html
+https://www.gnu.org/software/libc/manual/html_node/Argp-Example-2.html
+
+github kiselgra configure.ac flags beispiele
+strptime für time parsing
+
+https://stackoverflow.com/questions/1471226/most-tricky-useful-commands-for-gdb-debugger:
+    backtrace full: Complete backtrace with local variables
+    up, down, frame: Move through frames
+    watch: Suspend the process when a certain condition is met
+    set print pretty on: Prints out prettily formatted C source code
+    set logging on: Log debugging session to show to others for support
+    set print array on: Pretty array printing
+    finish: Step out of function
+    enable and disable: Enable/disable breakpoints
+    tbreak: Break once, and then remove the breakpoint
+    where: Line number currently being executed
+    info locals: View all local variables
+    info args: View all function arguments
+    list: view source
+    rbreak: break on function matching regular expression
