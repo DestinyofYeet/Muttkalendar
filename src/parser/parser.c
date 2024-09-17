@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iconv.h>
-#include <uchar.h>
 #include <wchar.h>
 
 
@@ -31,7 +30,13 @@ ICS_File* ics_parse_file(FILE *file, ICS_Arguments *args){
   char *file_content = malloc(file_size + 1);
   // memset(buffer, 0, file_size); // not really important here
 
-  fread(file_content, file_size, 1, file);
+  long bytes_read = fread(file_content, file_size, 1, file);
+
+  if (bytes_read == 0){
+    printf("Error: Read 0 bytes from input stream\n");
+    free(file_content);
+    return NULL;
+  }
 
   file_content[file_size] = '\0';
   
