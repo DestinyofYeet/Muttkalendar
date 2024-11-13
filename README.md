@@ -34,6 +34,10 @@ make
 One can also specify 
 `--enable-debug=yes` or `--enable-asan=yes` at `../configure` to enable debug flags or address sanitization
 
+# Current bugs
+
+The time is not displayed properly
+
 # Project Status
 
 Values that can be accessed:
