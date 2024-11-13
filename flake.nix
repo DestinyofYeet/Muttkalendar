@@ -10,6 +10,9 @@
     pkgs = import nixpkgs { system = "x86_64-linux"; };
   in {
     devShells.x86_64-linux.default = pkgs.mkShell {
+
+      # packages = [ (pkgs.callPackage ./pkg.nix {}) ];
+      
       buildInputs = with pkgs; [
         autoconf
         automake
@@ -17,6 +20,13 @@
         gccgo
         gnumake
       ];
+
+      hardeningDisable = [ "fortify" ];
+
+      shellHook = ''
+        ${pkgs.nushell}/bin/nu
+        exit
+      '';
     };
 
 
