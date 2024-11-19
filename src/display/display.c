@@ -53,16 +53,23 @@ char *ics_format_rrule(ICS_RRULE *rrule){
 }
 
 bool ics_exists_timezone(char *timezone){
-  size_t string_size_needed = snprintf(NULL, 0, "/usr/share/zoneinfo/%s", timezone) + 1;
+  char *tz_dir = getenv("TZDIR");
+
+  if (tz_dir == NULL){
+    tz_dir = "/usr/share/zoneinfo";
+  }
+  
+  size_t string_size_needed = snprintf(NULL, 0, "%s/%s", tz_dir, timezone) + 1;
 
   char *check_timezone = malloc(string_size_needed);
 
-  snprintf(check_timezone, string_size_needed, "/usr/share/zoneinfo/%s", timezone);
+  snprintf(check_timezone, string_size_needed, "%s/%s", tz_dir, timezone);
 
   debug("Checking if file %s exists\n", check_timezone);
   bool exists = access(check_timezone, F_OK) == 0;
   debug("Timezone %s %s\n", check_timezone, exists ? "exists" : "does not exist");
   free(check_timezone);
+  // free(tz_dir);
   return exists;
 }
 
@@ -75,7 +82,7 @@ char *ics_format_time(ICS_Time *time){
 
   struct tm time_to_convert = time->time;
   bool timezone_exists = ics_exists_timezone(time->timezone);
-
+  
   if (time->timezone != NULL && timezone_exists){
     // if timezone is NULL, we have a floating timezone and we shouldn't do anything to it 
     #ifdef DEBUG
@@ -114,7 +121,7 @@ char *ics_format_time(ICS_Time *time){
     }
 
     time_to_convert = *local_tm;
-  }
+  } 
 
   char *time_format = TIME_FORMAT_STR;
 
