@@ -94,7 +94,7 @@ char *ics_format_time(ICS_Time *time){
 
     if (old_tz != NULL){
       size_t tz_len = strlen(old_tz);
-      char *tz_buffer = malloc(sizeof(char) * (tz_len + 1));
+      tz_buffer = malloc(sizeof(char) * (tz_len + 1));
       strcpy(tz_buffer, old_tz);
     }
 
@@ -107,18 +107,22 @@ char *ics_format_time(ICS_Time *time){
       perror("mktime failed\n");
       return NULL;
     }
-    
+  
     if (tz_buffer == NULL){
       unsetenv("TZ");
     } else {
       setenv("TZ", tz_buffer, 1);
     }
 
+    tzset();
+
     struct tm *local_tm = localtime(&utc_time);
     if (local_tm == NULL){
       perror("localtime failed\n");
       return NULL;
     }
+
+    free(tz_buffer);
 
     time_to_convert = *local_tm;
   } 
