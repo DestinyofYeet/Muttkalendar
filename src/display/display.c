@@ -182,9 +182,16 @@ void ics_display_event(void *node, void* extra_args){
     printf("Reoccuring: \t\t%s\n", rrule_string);
     free(rrule_string);
   }
+
+
+  char *local_tz = getenv("TZ");
+  if (!ics_exists_timezone(local_tz) && local_tz != NULL) {
+    printf("Warning: Local timezone %s was not found!\n", local_tz);
+  }
   printf("\n");
   free(start_time);
   free(end_time);
+  free(local_tz);
 }
 
 void ics_display_calendar(ICS_File *file){

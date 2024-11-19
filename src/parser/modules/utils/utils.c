@@ -341,3 +341,16 @@ ICS_Line_Parse_Data *ics_create_line_parse_data(){
 void ics_destroy_line_parse_data(ICS_Line_Parse_Data *data){
   free(data);
 }
+
+char *ics_merge_strings(char *first, size_t first_size, char *second, size_t second_size){
+  size_t new_str_size = first_size + second_size;
+  char *new_string = malloc((sizeof(char) * new_str_size) + 1);
+
+  memcpy(new_string, first, first_size);
+
+  memcpy(new_string + first_size, second, second_size);
+
+  new_string[new_str_size] = '\0';
+
+  return new_string;
+}

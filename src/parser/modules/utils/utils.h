@@ -15,7 +15,9 @@
 #define _DEBUG 0
 #endif
 
-#define debug(frmt, ...) do { if (_DEBUG) fprintf(stdout, frmt, __VA_ARGS__); } while (0)
+#define DEBUG_PREFIX "Debug: "
+
+#define debug(frmt, ...) do { if (_DEBUG) { char *string=ics_merge_strings(DEBUG_PREFIX, strlen(DEBUG_PREFIX), frmt, strlen(frmt)); fprintf(stdout, string, __VA_ARGS__); free(string); }} while (0)
 
 #define CHAR_LF 10
 #define CHAR_CR 13
@@ -83,4 +85,11 @@ void ics_nuke_backslash_comma(char *buffer, size_t buffer_size);
 
 ICS_Line_Parse_Data *ics_create_line_parse_data();
 void ics_destroy_line_parse_data(ICS_Line_Parse_Data *data);
+
+/**
+
+This function assumes that you pass two valid C-Strings, terminated with a \n
+
+**/
+char *ics_merge_strings(char *first, size_t length_one, char *second, size_t length_two);
 #endif 
