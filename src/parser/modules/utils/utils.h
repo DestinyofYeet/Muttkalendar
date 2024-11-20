@@ -86,10 +86,5 @@ void ics_nuke_backslash_comma(char *buffer, size_t buffer_size);
 ICS_Line_Parse_Data *ics_create_line_parse_data();
 void ics_destroy_line_parse_data(ICS_Line_Parse_Data *data);
 
-/**
-
-This function assumes that you pass two valid C-Strings, terminated with a \n
-
-**/
 char *ics_merge_strings(char *first, size_t length_one, char *second, size_t length_two);
 #endif 
