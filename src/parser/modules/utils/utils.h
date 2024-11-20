@@ -17,7 +17,7 @@
 
 #define DEBUG_PREFIX "Debug: "
 
-#define debug(frmt, ...) do { if (_DEBUG) { char *string=ics_merge_strings(DEBUG_PREFIX, strlen(DEBUG_PREFIX), frmt, strlen(frmt)); fprintf(stdout, string, __VA_ARGS__); free(string); }} while (0)
+#define debug(frmt, ...) do { fprintf(stdout, DEBUG_PREFIX frmt, __VA_ARGS__); } while (0)
 
 #define CHAR_LF 10
 #define CHAR_CR 13
