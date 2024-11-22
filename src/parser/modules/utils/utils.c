@@ -126,7 +126,7 @@ char *ics_copy_pair_value(ICS_KeyValuePair *pair){
   return buffer;
 }
 
-char *string_copy(char *string, size_t string_length){
+char *ics_string_copy(char *string, size_t string_length){
   // thought I needed it, but I don't
   // The only use-case could just use ics_copy_pair_value
   char *new_string = malloc(sizeof(char) * (string_length + 1));
@@ -353,4 +353,70 @@ char *ics_merge_strings(char *first, size_t first_size, char *second, size_t sec
   new_string[new_str_size] = '\0';
 
   return new_string;
+}
+
+ICS_Buffer *ics_buffer_create(){
+  ICS_Buffer *ics_buffer = malloc(sizeof(ICS_Buffer));
+
+  ics_buffer->content = NULL;
+  ics_buffer->size = 0;
+
+  return ics_buffer;
+}
+
+void ics_buffer_destroy(ICS_Buffer *buffer){
+  if (buffer->content != NULL){
+    free(buffer->content);
+  }
+
+  free(buffer);
+}
+
+ICS_Buffer *ics_read_file(FILE *file){
+  if (file == NULL){
+    printf("Error! Invalid file pointer given!\n");
+    return NULL;
+  }
+
+  fseek(file, 0L, SEEK_END);
+  size_t file_size = ftell(file);
+  rewind(file);
+  char *file_content = malloc(file_size + 1);
+  // memset(buffer, 0, file_size); // not really important here
+
+  long bytes_read = fread(file_content, file_size, 1, file);
+
+  if (bytes_read == 0){
+    printf("Error: Read 0 bytes from input stream\n");
+    free(file_content);
+    return NULL;
+  }
+
+  file_content[file_size] = '\0';
+
+  ICS_Buffer *buffer = ics_buffer_create();
+
+  buffer->content = file_content;
+  buffer->size = file_size;
+
+  return buffer;
+}
+
+ICS_Buffer *ics_read_stdin(){
+  ICS_Buffer *buffer = ics_buffer_create();
+
+  buffer->content = malloc(sizeof(char) * 1);
+  buffer->size = 1;
+
+  char c;
+
+  while((c = getchar()) && c != EOF) {
+    buffer->content[buffer->size - 1] = c;
+    buffer->size += 1;
+    buffer->content = realloc(buffer->content, buffer->size);
+  }
+
+  buffer->content[buffer->size - 1] = '\0';
+
+  return buffer;
 }

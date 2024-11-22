@@ -15,49 +15,27 @@
 #define VEVENT_BEGIN "BEGIN:VEVENT"
 #define VEVENT_END "END:VEVENT"
 
-ICS_File* ics_parse_file(FILE *file, ICS_Arguments *args){
-  if (file == NULL){
-    printf("Error! Invalid file pointer given!\n");
-    return NULL;
-  }
-
-  fseek(file, 0L, SEEK_END);
-  size_t file_size = ftell(file);
-  rewind(file);
-
-  if (args->verbose) printf("File is %ld big\n", file_size);
-
-  char *file_content = malloc(file_size + 1);
-  // memset(buffer, 0, file_size); // not really important here
-
-  long bytes_read = fread(file_content, file_size, 1, file);
-
-  if (bytes_read == 0){
-    printf("Error: Read 0 bytes from input stream\n");
-    free(file_content);
-    return NULL;
-  }
-
-  file_content[file_size] = '\0';
+ICS_File* ics_parse_buffer(ICS_Buffer *buffer, ICS_Arguments *args){
   
-  if(args->verbose) printf("Read file:\n%s\n", file_content);
+  if(args->verbose) printf("Read buffer:\n%s\n", buffer->content);
 
 
-  size_t dest_size = file_size * 4; // based on worst case behaviour of 1 -> 4 byte conversion
+  size_t dest_size = buffer->size * 4; // based on worst case behaviour of 1 -> 4 byte conversion
   char *dest_buffer = malloc(dest_size);
 
-  size_t old_file_size = file_size;
+  size_t old_file_size = buffer->size;
 
   if (args->charset != NULL){
     debug("Converting from %s to UTF-8\n", args->charset);
-    ics_convert_encoding(args->charset, file_content, file_size, dest_buffer, dest_size);
+    ics_convert_encoding(args->charset, buffer->content, buffer->size, dest_buffer, dest_size);
     debug("File size changed from %zu to %zu!\n", old_file_size, dest_size);
-    free(file_content);
+    ics_buffer_destroy(buffer);
   } else {
     debug("Skipping conversion!%s", "\n");
     free(dest_buffer);
-    dest_buffer = file_content;
-    dest_size = old_file_size;
+    dest_buffer = ics_string_copy(buffer->content, buffer->size);
+    dest_size = buffer->size;
+    ics_buffer_destroy(buffer);
   }
 
 
@@ -222,4 +200,3 @@ ICS_Calendar *ics_parse_calendar(char *buffer, size_t buffer_size){
   }
   return calendar;
 }
-

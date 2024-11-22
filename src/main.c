@@ -1,3 +1,4 @@
+#include "parser/modules/utils/utils.h"
 #include "parser/parser.h"
 #include <stdio.h>
 #include <argp.h>
@@ -77,27 +78,32 @@ int main(int argc, char **argv){
          arguments.verbose ? "yes" : "no");
   }
 
+  ICS_Buffer *buffer;
+
   if (strcmp(arguments.input_file, "-") == 0){
-    printf("Reading from stdin is not supported yet.\n");
-    return 1;
+    buffer = ics_read_stdin();
+    debug("STDIN BUFFER: %s", buffer->content);
+  } else {
+    
+    FILE *fptr;
+
+    if ((fptr = fopen(arguments.input_file, "r")) == NULL){
+      printf("Error! Could not open the file!\n");
+      return 1;
+    }
+
+    buffer = ics_read_file(fptr);
+
+    fclose(fptr);
+
+    if (buffer == NULL){
+      printf("Failed to parse file: %s!\n", arguments.input_file);
+      return 1;
+    }
   }
 
-  FILE *fptr;
-
-  if ((fptr = fopen(arguments.input_file, "r")) == NULL){
-    printf("Error! Could not open the file!\n");
-    return 1;
-  }
-
-  ICS_File *ics_file = ics_parse_file(fptr, &arguments);
-
-  fclose(fptr);
-
-  if (ics_file == NULL){
-    printf("Failed to parse file: %s!\n", arguments.input_file);
-    return 1;
-  }
-
+  ICS_File *ics_file = ics_parse_buffer(buffer, &arguments);
+ 
   ics_file->file_path = arguments.input_file;
 
   ics_display_calendar(ics_file);

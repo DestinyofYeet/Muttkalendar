@@ -38,7 +38,7 @@ ICS_Calendar *ics_parse_calendar(char *buffer, size_t buffer_size);
 ICS_Calendar *ics_create_calendar();
 void ics_destroy_calendar(ICS_Calendar *calendar);
 
-ICS_File *ics_parse_file(FILE *file, ICS_Arguments *args);
+ICS_File *ics_parse_buffer(ICS_Buffer *buffer, ICS_Arguments *args);
 bool ics_unfold_file(char* buffer, size_t size, int8_t debug);
 
 ICS_File *ics_create_file();
@@ -46,4 +46,5 @@ void ics_destroy_file(ICS_File *file);
 void ics_parse_line(char* line, size_t length, ICS_File *event);
 
 char *ics_convert_LF_CRLF(char *buffer, size_t buf_size, size_t *new_buf_size, int line_count);
+
 #endif // PARSER_H_

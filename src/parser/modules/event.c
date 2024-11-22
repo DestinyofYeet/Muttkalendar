@@ -87,7 +87,7 @@ ICS_RRULE *_ics_parse_rrule(char *value, size_t value_length){
 
   ICS_KeyValuePair *byday_pair = ics_split_key_value(interval_pair->value, interval_pair->value_length, '=');
 
-  rrule->byday = string_copy(byday_pair->value, byday_pair->value_length);
+  rrule->byday = ics_string_copy(byday_pair->value, byday_pair->value_length);
 
   ics_destroy_pair(interval_pair);
   ics_destroy_pair(freq_pair);
